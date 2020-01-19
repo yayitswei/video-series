@@ -75,7 +75,11 @@
   (action [{:keys [app state]}]
     (let [state-map       @state
           ident           [:item/id id]
-          completed-state (fs/mark-complete* state-map ident)
+          completed-state (fs/mark-complete* state-map ident
+                                             [:item/title
+                                              :item/in-stock
+                                              :item/price
+                                              :item/category])
           item            (get-in completed-state ident)
           ItemListItem    (comp/registry-key->class :app.client/ItemListItem)
           item-props      (fdn/db->tree (comp/get-query ItemListItem) item completed-state)
